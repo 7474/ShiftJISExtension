@@ -3,10 +3,11 @@
   <PropertyGroup>
 	  <TargetFramework>netstandard2.1</TargetFramework>
 	  <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
-	  <Version>1.0.1</Version>
+	  <Version>1.0.2</Version>
 	  <PackageLicenseExpression>MIT</PackageLicenseExpression>
 	  <RepositoryUrl>https://github.com/7474/ShiftJISExtension</RepositoryUrl>
 	  <Authors>koudenpa</Authors>
+	  <Description>Extension for processing Shift_JIS code text.</Description>
   </PropertyGroup>
 
   <ItemGroup>
