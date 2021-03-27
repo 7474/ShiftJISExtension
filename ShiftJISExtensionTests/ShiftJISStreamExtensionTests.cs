@@ -15,8 +15,8 @@ namespace ShiftJISExtension.Tests
         [TestMethod()]
         public void ToUTF8AsyncTest()
         {
-            var sjis = File.ReadAllBytes(@"Data\shift_jis.txt");
-            var utf8 = File.ReadAllBytes(@"Data\utf8.txt");
+            var sjis = File.ReadAllBytes(@"Data/shift_jis.txt");
+            var utf8 = File.ReadAllBytes(@"Data/utf8.txt");
             using (var sjisStream = new MemoryStream(sjis))
             using (var utf8Stream = sjisStream.ToUTF8Async().Result)
             using (var ms = new MemoryStream())
