@@ -48,17 +48,18 @@ namespace ShiftJISExtension
                 var inputStringToEnc = toEnc.GetString(inputBytes);
 
                 converted = toEnc.GetBytes(inputStringFromEnc);
-                var isSjis = !inputBytes.SequenceEqual(toEnc.GetBytes(inputStringToEnc));
-                if (isSjis)
-                {
-                    await destination.WriteAsync(converted, 0, converted.Length);
-                }
-                else
+                var isUtf8 = inputBytes.SequenceEqual(toEnc.GetBytes(inputStringToEnc));
+                if (isUtf8)
                 {
                     inputMs.Position = 0;
                     await inputMs.CopyToAsync(destination);
+                    return false;
                 }
-                return isSjis;
+                else
+                {
+                    await destination.WriteAsync(converted, 0, converted.Length);
+                    return true;
+                }
             }
         }
     }
