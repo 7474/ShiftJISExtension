@@ -1,0 +1,21 @@
+name: Publish Puckage
+
+on:
+  push:
+    tags:
+      - 'v*'
+
+jobs:
+  push-nuget-package:
+    name: Push Nuget Package to NuGet.org
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v2
+    - uses: actions/setup-dotnet@v1
+      with:
+        dotnet-version: '5.0.x'
+
+    - run: dotnet build ShiftJISExtension/ShiftJISExtension.csproj --configuration Release
+    - run: dotnet nuget push ShiftJISExtension/bin/Release/ShiftJISExtension.*.nupkg -k $NUGET_OLG_API_KEY -s https://api.nuget.org/v3/index.json
+      env:
+        NUGET_OLG_API_KEY: ${{ secrets.NUGET_OLG_API_KEY }}
