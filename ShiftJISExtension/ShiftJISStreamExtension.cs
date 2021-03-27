@@ -14,7 +14,8 @@ namespace ShiftJISExtension
     {
         /// <summary>
         /// source ストリームを Shift_JIS コードの文字列であるとみなして UTF8 コードの文字列ストリームを返す。
-        /// source ストリームは終端まで読み込まれた後破棄される。
+        /// source ストリームが UTF-8 コードだった場合 source と同じ内容のストリームを返す。
+        /// いずれの場合も source ストリームは終端まで読み込まれた後破棄される。
         /// </summary>
         /// <param name="source">Shift_JIS コードの文字列ストリーム</param>
         /// <returns>source を UTF-8 コードに変換した文字列ストリーム</returns>
@@ -47,9 +48,18 @@ namespace ShiftJISExtension
                 var inputStringToEnc = toEnc.GetString(inputBytes);
 
                 converted = toEnc.GetBytes(inputStringFromEnc);
-                destination.Write(converted, 0, converted.Length);
-
-                return !inputBytes.SequenceEqual(toEnc.GetBytes(inputStringToEnc));
+                var isUtf8 = inputBytes.SequenceEqual(toEnc.GetBytes(inputStringToEnc));
+                if (isUtf8)
+                {
+                    inputMs.Position = 0;
+                    await inputMs.CopyToAsync(destination);
+                    return false;
+                }
+                else
+                {
+                    await destination.WriteAsync(converted, 0, converted.Length);
+                    return true;
+                }
             }
         }
     }
