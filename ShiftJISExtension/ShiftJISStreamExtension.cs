@@ -26,7 +26,7 @@ namespace ShiftJISExtension
             var outputMs = new MemoryStream();
 
             await source.ConvertEncodingAsync(outputMs, fromEnc, Encoding.UTF8);
-            await source.DisposeAsync();
+            source.Dispose();
 
             outputMs.Position = 0;
             return outputMs;
